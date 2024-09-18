@@ -1,4 +1,4 @@
-# native
+# Native
 
 This app is a simple demonstration of communication between Flutter and native apps, using a calculator. It showcases the integration of Flutter with Kotlin and Flutter with Swift UI.
 
