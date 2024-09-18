@@ -41,6 +41,7 @@ This code sets up a method channel in Swift to communicate with a Flutter applic
 
 ## Swift Code Implementation
 
+```swift
 import Flutter
 import UIKit
 
@@ -50,17 +51,22 @@ import UIKit
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    
     // Access the FlutterViewController
     let controller: FlutterViewController = window?.rootViewController as! FlutterViewController
+    
     // Create a method channel named 'meuapp.com.br/nativo'
     let nativoChannel = FlutterMethodChannel(name: "meuapp.com.br/nativo", binaryMessenger: controller.binaryMessenger)
+    
     // Set up the method call handler
     nativoChannel.setMethodCallHandler { (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
+      
       // Check if the method is 'calcSum'
       guard call.method == "calcSum" else {
         result(FlutterMethodNotImplemented)
         return
       }
+      
       // Extract the arguments and perform the sum
       if let args = call.arguments as? [String: Any],
          let a = args["a"] as? Int,
@@ -71,11 +77,13 @@ import UIKit
         result(FlutterError(code: "INVALID_ARGUMENT", message: "Argumentos inválidos", details: nil))
       }
     }
+
     // Register the generated plugins
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
+```
 
 ##Explanation
 
@@ -98,8 +106,9 @@ This Kotlin code integrates the Flutter app with native Android functionality th
 
 ## Kotlin Code Implementation
 
-
+```kotlin
 package com.example.nativoapp
+
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -107,10 +116,13 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity: FlutterActivity() {
     // Define the method channel name
     private val CHANNEL = "meuapp.com.br/nativo"
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+
         // Set up the method channel to listen for method calls
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+            
             // Handle the 'calcSum' method
             if (call.method == "calcSum") {
                 val a = call.argument<Int>("a") ?: 0
@@ -123,8 +135,7 @@ class MainActivity: FlutterActivity() {
         }
     }
 }
-
-
+```
 ##Explanation
 
 Method Channel: The MethodChannel is used to establish communication between Flutter and native Android (Kotlin). The channel name is defined as "meuapp.com.br/nativo".
